@@ -133,33 +133,25 @@ router.put(
   '/:userId/:postingId',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    console.log(parseInt(req.params.userId))
-    console.log(parseInt(req.params.postingId))
-    let index = -1
+    console.log(req.params)
 
-    for (let i = 0; i < postings.length; i++) {
-      if (
-        postings[i].userId === parseInt(req.params.userId) &&
-        postings[i].postingId === parseInt(req.params.postingId)
-      ) {
-        index = i
-        break
+    // Käydään postings-taulukko läpi find()-metodilla, joka palauttaa 'true' jos id:t mätsää, tai 'false' jos ei. Tallenetaan arvo let -muuttujaan
+    let foundPosting = postings.find(
+      (p) =>
+        p.userId == req.params.userId && p.postingId == req.params.postingId
+    )
+
+    // Jos postaus löytyi
+    if (foundPosting) {
+      // Käydään for-in -loopilla läpi jokainen postauksessa ja req.body -objektissa oleva 'property' (p),
+      // ja annetaan postauksessa olevalle 'propertylle' uudeksi arvoksi req.body -objektissa olevan 'propertyn' arvo
+      for (p in (foundPosting, req.body)) {
+        foundPosting[p] = req.body[p]
       }
-      postings[index].title = req.body.title
-      postings[index].description = req.body.description
-      /*postings[index].category = req.body.category
-  postings[index].location = req.body.location
-  postings[index].images = req.body.images
-  postings[index].price = req.body.price
-  postings[index].postDate = req.body.postDate
-  postings[index].shipping = req.body.shipping
-  postings[index].pickup = req.body.pickup
-  postings[index].firstName = req.body.firstName
-  postings[index].lastName = req.body.lastName
-  postings[index].phoneNum = req.body.phoneNum
-  postings[index].email = req.body.email
-*/
-      res.sendStatus(200)
+      res.sendStatus(202)
+    } else {
+      // Jos postausta ei löytynyt annetuilla id-parametreilla
+      res.sendStatus(404)
     }
   }
 )
@@ -168,6 +160,7 @@ module.exports = router
 
 // Postings lista jonne postaukset tallennetaan
 // Muutama hard koodattu hakemisen testaamisen helpottamiseksi
+
 const postings = [
   {
     userId: 1,
