@@ -3,11 +3,94 @@ const router = express.Router()
 const { v4: uuidv4 } = require('uuid')
 const passport = require('passport')
 
-// Tämän avulla voidaan hakea kaikki postaukset olit kirjautunut tai et
+// Tämän avulla voidaan hakea halutut postaukset olit kirjautunut tai et
 router.get('/', (req, res) => {
+  // Jos postauksia on olemassa
   if (postings.length > 0) {
-    res.json(postings)
+    // Selvitetään, tuliko kyselyn mukana parametreja. hasOwnProperty()-metodi palauttaa boolean arvon 'true' tai 'false' jos kyseinen parametri löytyy. Arvo tallennetaan let -muuttujaan myöhempää käyttöä varten.
+    let hasCategory = req.query.hasOwnProperty('category')
+    let hasLocation = req.query.hasOwnProperty('location')
+    let hasDate = req.query.hasOwnProperty('date')
+
+    // Taulukko johon halutut postaukset tallennetaan ja lähetetään vastauksessa.
+    let matchingPostings = []
+
+    // Käydään läpi kaikki mahdolliset skenaariot kolmen sallitun parametrin osalta. Kolmella parametrilla eri mahdollisuuksia on 3^2 = 9.
+    if (hasCategory || hasDate || hasLocation) {
+      console.log('query params:', req.query)
+
+      // Käydään läpi kaikki mahdolliset skenaariot kolmen sallitun parametrin osalta
+      if (hasCategory && hasDate && hasLocation) {
+        postings.find((p) => {
+          if (
+            p.category == req.query.category &&
+            p.location == req.query.location &&
+            p.postDate == req.query.date
+          ) {
+            matchingPostings.push(p)
+          }
+        })
+      } else if (!hasCategory && hasDate && hasLocation) {
+        postings.find((p) => {
+          if (
+            p.postDate == req.query.date &&
+            p.location == req.query.location
+          ) {
+            matchingPostings.push(p)
+          }
+        })
+      } else if (hasCategory && !hasDate && hasLocation) {
+        postings.find((p) => {
+          if (
+            p.location == req.query.location &&
+            p.category == req.query.category
+          ) {
+            matchingPostings.push(p)
+          }
+        })
+      } else if (hasCategory && hasDate && !hasLocation) {
+        postings.find((p) => {
+          if (
+            p.category == req.query.category &&
+            p.postDate == req.query.date
+          ) {
+            matchingPostings.push(p)
+          }
+        })
+      } else if (hasCategory && !hasDate && !hasLocation) {
+        postings.find((p) => {
+          if (p.category == req.query.category) {
+            matchingPostings.push(p)
+          }
+        })
+      } else if (!hasCategory && hasDate && !hasLocation) {
+        postings.find((p) => {
+          if (p.postDate == req.query.date) {
+            matchingPostings.push(p)
+          }
+        })
+      } else if (!hasCategory && !hasDate && hasLocation) {
+        postings.find((p) => {
+          if (p.location == req.query.location) {
+            matchingPostings.push(p)
+          }
+        })
+      }
+      console.log('matches: ', matchingPostings.length)
+      if (matchingPostings.length > 0) {
+        res.json(matchingPostings)
+      }
+    }
+    // Jos parametreja ei ole, palautetaan kaikki postaukset
+    else {
+      res.json(postings)
+      console.log(
+        'no parameters given, total amount of postings: ',
+        postings.length
+      )
+    }
   } else {
+    // Jos postauksia ei ole olemassa
     res.sendStatus(404)
   }
 })
@@ -88,11 +171,11 @@ module.exports = router
 const postings = [
   {
     userId: 1,
-    postingId: 120,
+    postingId: 1,
     title: 'Example posting',
     description: 'example',
-    category: 'Test',
-    location: 'Finland',
+    category: 'Konsolit',
+    location: 'Oulu',
     images: [null],
     price: '1000',
     postDate: '2022-01-27',
@@ -108,11 +191,11 @@ const postings = [
     },
   },
   {
-    userId: 1,
-    postingId: 110,
+    userId: 2,
+    postingId: 2,
     title: 'Example posting2',
     description: 'example2',
-    category: 'Test',
+    category: 'Ajoneuvot',
     location: 'Finland',
     images: [null],
     price: '1000',
@@ -129,8 +212,8 @@ const postings = [
     },
   },
   {
-    userId: 2,
-    postingId: 10,
+    userId: 3,
+    postingId: 3,
     title: 'Example posting',
     description: 'example',
     category: 'Test',
@@ -150,8 +233,8 @@ const postings = [
     },
   },
   {
-    userId: 2,
-    postingId: 1,
+    userId: 4,
+    postingId: 4,
     title: 'Example posting',
     description: 'example',
     category: 'Test',
