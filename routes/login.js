@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const passport = require('../middlewares/authentication/passport')
 const jwt = require('jsonwebtoken')
+const avain = require('../secrets')
+
+
 
 /**************** Login ****************/
 router.post(
