@@ -3,14 +3,17 @@ const router = express.Router()
 const { v4: uuidv4 } = require('uuid')
 const bcrypt = require('bcryptjs')
 
+// Rekisteröinnin validoimiseen käytetty middleware -funktio
+const newUserValidateMw =
+  require('../middlewares/json-validation/users-path-ajv').newUserValidateMw
+
 // tällä voidaan luoda uusi käyttäjä
-router.post('/', (req, res) => {
+router.post('/', newUserValidateMw, (req, res) => {
   const salt = bcrypt.genSaltSync(6)
   const hashedPassword = bcrypt.hashSync(req.body.password, salt)
 
   const user = {
     userId: uuidv4(),
-    testId: 10,
     username: req.body.username,
     password: hashedPassword,
     firstName: req.body.firstName,
@@ -27,7 +30,7 @@ router.post('/', (req, res) => {
   res.sendStatus(201)
 })
 
-router.get('/postings/:userId', (req, res) => {
+/* router.get('/postings/:userId', (req, res) => {
   console.log(req.params.userId)
   var tulostus = []
   let index = -1
@@ -59,7 +62,7 @@ router.get('/:testId', (req, res) => {
   } else {
     res.json(users[foundIndex])
   }
-})
+}) */
 
 // Users lista jonne tallennetaan käyttäjät
 // muutama hard koodattu hakemisen testaamisen helpottamiseksi

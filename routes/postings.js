@@ -3,8 +3,16 @@ const router = express.Router()
 const { v4: uuidv4 } = require('uuid')
 const passport = require('passport')
 
+// Kyselyjen validointiin tarvittavat middleware -funktiot
+const newPostingValidateMw =
+  require('../middlewares/json-validation/postings-path-ajv').newPostingValidateMw
+const getPostingValidateMw =
+  require('../middlewares/json-validation/postings-path-ajv').getPostingValidateMw
+const modifyPostingValidateMw =
+  require('../middlewares/json-validation/postings-path-ajv').modifyPostingValidateMw
+
 // Tämän avulla voidaan hakea halutut postaukset olit kirjautunut tai et
-router.get('/', (req, res) => {
+router.get('/', getPostingValidateMw, (req, res) => {
   // Jos postauksia on olemassa
   if (postings.length > 0) {
     // Selvitetään, tuliko kyselyn mukana parametreja. hasOwnProperty()-metodi palauttaa boolean arvon 'true' tai 'false' jos kyseinen parametri löytyy. Arvo tallennetaan let -muuttujaan myöhempää käyttöä varten.
@@ -25,17 +33,14 @@ router.get('/', (req, res) => {
           if (
             p.category == req.query.category &&
             p.location == req.query.location &&
-            p.postDate == req.query.date
+            p.date == req.query.date
           ) {
             matchingPostings.push(p)
           }
         })
       } else if (!hasCategory && hasDate && hasLocation) {
         postings.find((p) => {
-          if (
-            p.postDate == req.query.date &&
-            p.location == req.query.location
-          ) {
+          if (p.date == req.query.date && p.location == req.query.location) {
             matchingPostings.push(p)
           }
         })
@@ -50,10 +55,7 @@ router.get('/', (req, res) => {
         })
       } else if (hasCategory && hasDate && !hasLocation) {
         postings.find((p) => {
-          if (
-            p.category == req.query.category &&
-            p.postDate == req.query.date
-          ) {
+          if (p.category == req.query.category && p.date == req.query.date) {
             matchingPostings.push(p)
           }
         })
@@ -65,7 +67,7 @@ router.get('/', (req, res) => {
         })
       } else if (!hasCategory && hasDate && !hasLocation) {
         postings.find((p) => {
-          if (p.postDate == req.query.date) {
+          if (p.date == req.query.date) {
             matchingPostings.push(p)
           }
         })
@@ -98,6 +100,8 @@ router.get('/', (req, res) => {
 router.post(
   '/:userId',
   passport.authenticate('jwt', { session: false }),
+  newPostingValidateMw,
+
   (req, res) => {
     let posting = {
       userId: req.params.userId,
@@ -106,9 +110,9 @@ router.post(
       description: req.body.description,
       category: req.body.category,
       location: req.body.category,
-      images: [null],
+      images: req.body.images,
       price: req.body.price,
-      postDate: req.body.postDate,
+      date: req.body.date,
       deliveryType: {
         shipping: req.body.deliveryType.shipping,
         pickup: req.body.deliveryType.pickup,
@@ -132,6 +136,8 @@ router.post(
 router.put(
   '/:userId/:postingId',
   passport.authenticate('jwt', { session: false }),
+  modifyPostingValidateMw,
+
   (req, res) => {
     console.log(req.params)
 
@@ -171,7 +177,7 @@ const postings = [
     location: 'Oulu',
     images: [null],
     price: '1000',
-    postDate: '2022-01-27',
+    date: '2022-01-27',
     deliveryType: {
       shipping: true,
       pickup: true,
@@ -192,7 +198,7 @@ const postings = [
     location: 'Finland',
     images: [null],
     price: '1000',
-    postDate: '2022-01-27',
+    date: '2022-01-26',
     deliveryType: {
       shipping: true,
       pickup: true,
@@ -213,7 +219,7 @@ const postings = [
     location: 'Finland',
     images: [null],
     price: '1000',
-    postDate: '2022-01-27',
+    date: '2022-01-25',
     deliveryType: {
       shipping: true,
       pickup: true,
@@ -234,7 +240,7 @@ const postings = [
     location: 'Finland',
     images: [null],
     price: '1000',
-    postDate: '2022-01-27',
+    date: '2022-01-25',
     deliveryType: {
       shipping: true,
       pickup: true,

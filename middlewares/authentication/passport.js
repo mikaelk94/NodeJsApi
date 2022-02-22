@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
-const users = require('../routes/users').users
+const users = require('../../routes/users').users
 
 /******** Middleware funktio passport-HTTP autentikointiin *********/
 const { BasicStrategy } = require('passport-http')
