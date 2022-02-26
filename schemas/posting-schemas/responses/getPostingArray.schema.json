@@ -1,0 +1,251 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "array",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": [],
+  "examples": [
+    [
+      {
+        "userId": 1,
+        "postingId": 1,
+        "title": "Example posting",
+        "description": "example",
+        "category": "Konsolit",
+        "location": "Oulu",
+        "images": [null],
+        "price": "1000",
+        "date": "2022-01-27",
+        "deliveryType": {
+          "shipping": true,
+          "pickup": true
+        },
+        "contactInfo": {
+          "firstName": "example",
+          "lastName": "example",
+          "phoneNum": "045-2098621",
+          "email": "user@example.com"
+        }
+      }
+    ]
+  ],
+  "items": {
+    "$id": "#/items",
+    "anyOf": [
+      {
+        "$id": "#/items/anyOf/0",
+        "type": "object",
+        "title": "The first anyOf schema",
+        "description": "An explanation about the purpose of this instance.",
+        "default": {},
+        "examples": [
+          {
+            "userId": 1,
+            "postingId": 1,
+            "title": "Example posting",
+            "description": "example",
+            "category": "Konsolit",
+            "location": "Oulu",
+            "images": [null],
+            "price": "1000",
+            "date": "2022-01-27",
+            "deliveryType": {
+              "shipping": true,
+              "pickup": true
+            },
+            "contactInfo": {
+              "firstName": "example",
+              "lastName": "example",
+              "phoneNum": "045-2098621",
+              "email": "user@example.com"
+            }
+          }
+        ],
+        "required": [
+          "userId",
+          "postingId",
+          "title",
+          "description",
+          "category",
+          "location",
+          "price",
+          "date",
+          "deliveryType",
+          "contactInfo"
+        ],
+        "properties": {
+          "userId": {
+            "$id": "#/items/anyOf/0/properties/userId",
+            "type": "integer",
+            "title": "The userId schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [1]
+          },
+          "postingId": {
+            "$id": "#/items/anyOf/0/properties/postingId",
+            "type": "integer",
+            "title": "The postingId schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [1]
+          },
+          "title": {
+            "$id": "#/items/anyOf/0/properties/title",
+            "type": "string",
+            "title": "The title schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["Example posting"]
+          },
+          "description": {
+            "$id": "#/items/anyOf/0/properties/description",
+            "type": "string",
+            "title": "The description schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["example"]
+          },
+          "category": {
+            "$id": "#/items/anyOf/0/properties/category",
+            "type": "string",
+            "title": "The category schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["Konsolit"]
+          },
+          "location": {
+            "$id": "#/items/anyOf/0/properties/location",
+            "type": "string",
+            "title": "The location schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["Oulu"]
+          },
+          "images": {
+            "$id": "#/items/anyOf/0/properties/images",
+            "type": "array",
+            "title": "The images schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": [],
+            "examples": [[null]],
+            "items": {
+              "$id": "#/items/anyOf/0/properties/images/items",
+              "anyOf": [
+                {
+                  "$id": "#/items/anyOf/0/properties/images/items/anyOf/0",
+                  "type": "null",
+                  "title": "The first anyOf schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": null,
+                  "examples": [null]
+                }
+              ]
+            }
+          },
+          "price": {
+            "$id": "#/items/anyOf/0/properties/price",
+            "type": "string",
+            "title": "The price schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["1000"]
+          },
+          "date": {
+            "$id": "#/items/anyOf/0/properties/date",
+            "type": "string",
+            "title": "The date schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["2022-01-27"]
+          },
+          "deliveryType": {
+            "$id": "#/items/anyOf/0/properties/deliveryType",
+            "type": "object",
+            "title": "The deliveryType schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "shipping": true,
+                "pickup": true
+              }
+            ],
+            "required": ["shipping", "pickup"],
+            "properties": {
+              "shipping": {
+                "$id": "#/items/anyOf/0/properties/deliveryType/properties/shipping",
+                "type": "boolean",
+                "title": "The shipping schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": false,
+                "examples": [true]
+              },
+              "pickup": {
+                "$id": "#/items/anyOf/0/properties/deliveryType/properties/pickup",
+                "type": "boolean",
+                "title": "The pickup schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": false,
+                "examples": [true]
+              }
+            },
+            "additionalProperties": true
+          },
+          "contactInfo": {
+            "$id": "#/items/anyOf/0/properties/contactInfo",
+            "type": "object",
+            "title": "The contactInfo schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "firstName": "example",
+                "lastName": "example",
+                "phoneNum": "045-2098621",
+                "email": "user@example.com"
+              }
+            ],
+            "required": ["firstName", "lastName", "phoneNum", "email"],
+            "properties": {
+              "firstName": {
+                "$id": "#/items/anyOf/0/properties/contactInfo/properties/firstName",
+                "type": "string",
+                "title": "The firstName schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["example"]
+              },
+              "lastName": {
+                "$id": "#/items/anyOf/0/properties/contactInfo/properties/lastName",
+                "type": "string",
+                "title": "The lastName schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["example"]
+              },
+              "phoneNum": {
+                "$id": "#/items/anyOf/0/properties/contactInfo/properties/phoneNum",
+                "type": "string",
+                "title": "The phoneNum schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["045-2098621"]
+              },
+              "email": {
+                "$id": "#/items/anyOf/0/properties/contactInfo/properties/email",
+                "type": "string",
+                "title": "The email schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": ["user@example.com"]
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    ]
+  }
+}

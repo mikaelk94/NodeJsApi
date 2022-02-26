@@ -4,12 +4,11 @@ const { v4: uuidv4 } = require('uuid')
 const passport = require('passport')
 
 // Kyselyjen validointiin tarvittavat middleware -funktiot
-const newPostingValidateMw =
-  require('../middlewares/json-validation/postings-path-ajv').newPostingValidateMw
-const getPostingValidateMw =
-  require('../middlewares/json-validation/postings-path-ajv').getPostingValidateMw
-const modifyPostingValidateMw =
-  require('../middlewares/json-validation/postings-path-ajv').modifyPostingValidateMw
+const {
+  newPostingValidateMw,
+  getPostingValidateMw,
+  modifyPostingValidateMw,
+} = require('../middlewares/json-validation/postings-path-ajv')
 
 // Tämän avulla voidaan hakea halutut postaukset olit kirjautunut tai et
 router.get('/', getPostingValidateMw, (req, res) => {
@@ -25,7 +24,7 @@ router.get('/', getPostingValidateMw, (req, res) => {
 
     // Käydään läpi kaikki mahdolliset skenaariot kolmen sallitun parametrin osalta. Kolmella parametrilla eri mahdollisuuksia on 3^2 = 9.
     if (hasCategory || hasDate || hasLocation) {
-      console.log('query params:', req.query)
+      // console.log('query params:', req.query)
 
       // Käydään läpi kaikki mahdolliset skenaariot kolmen sallitun parametrin osalta
       if (hasCategory && hasDate && hasLocation) {
@@ -78,7 +77,7 @@ router.get('/', getPostingValidateMw, (req, res) => {
           }
         })
       }
-      console.log('matches: ', matchingPostings.length)
+      // console.log('matches: ', matchingPostings.length)
       if (matchingPostings.length > 0) {
         res.json(matchingPostings)
       }
@@ -86,10 +85,10 @@ router.get('/', getPostingValidateMw, (req, res) => {
     // Jos parametreja ei ole, palautetaan kaikki postaukset
     else {
       res.json(postings)
-      console.log(
+      /* console.log(
         'no parameters given, total amount of postings: ',
         postings.length
-      )
+      ) */
     }
   } else {
     // Jos postauksia ei ole olemassa
@@ -99,7 +98,7 @@ router.get('/', getPostingValidateMw, (req, res) => {
 
 router.post(
   '/:userId',
-  passport.authenticate('jwt', { session: false }),
+  /* passport.authenticate('jwt', { session: false }), */
   newPostingValidateMw,
 
   (req, res) => {
@@ -109,7 +108,7 @@ router.post(
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
-      location: req.body.category,
+      location: req.body.location,
       images: req.body.images,
       price: req.body.price,
       date: req.body.date,
@@ -125,10 +124,10 @@ router.post(
       },
     }
     postings.push(posting)
-    console.log(
+    /* console.log(
       `Posting created by: ${posting.contactInfo.firstName} ${posting.contactInfo.lastName}`,
       posting
-    )
+    ) */
     res.sendStatus(201)
   }
 )
@@ -155,6 +154,24 @@ router.put(
         foundPosting[p] = req.body[p]
       }
       res.sendStatus(202)
+    } else {
+      // Jos postausta ei löytynyt annetuilla id-parametreilla
+      res.sendStatus(404)
+    }
+  }
+)
+
+router.delete(
+  '/:userId/:postingId',
+  /* passport.authenticate('jwt', { session: false }), */
+  (req, res) => {
+    let foundPosting = postings.find(
+      (p) =>
+        p.userId == req.params.userId && p.postingId == req.params.postingId
+    )
+    if (foundPosting) {
+      postings.splice(foundPosting, 1)
+      res.sendStatus(200)
     } else {
       // Jos postausta ei löytynyt annetuilla id-parametreilla
       res.sendStatus(404)
