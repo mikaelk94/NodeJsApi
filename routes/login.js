@@ -14,7 +14,7 @@ router.post(
     }
     const token = jwt.sign(payloadData, 'avain')
     res.json({ token: token })
-    console.log('payloadData:', payloadData)
+    //console.log('payloadData:', payloadData)
   }
 )
 

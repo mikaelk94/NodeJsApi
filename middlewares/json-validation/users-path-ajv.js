@@ -6,7 +6,7 @@ const newUserValidateMw = (req, res, next) => {
   const newUser = require('../../schemas/user-schemas/register.schema.json')
   const newUserValidator = ajv.compile(newUser)
   const validationResult = newUserValidator(req.body)
-  console.log(validationResult)
+  //console.log(validationResult)
 
   if (validationResult) {
     next()
