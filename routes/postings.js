@@ -134,7 +134,7 @@ router.post(
 
 router.put(
   '/:userId/:postingId',
-  passport.authenticate('jwt', { session: false }),
+  /* passport.authenticate('jwt', { session: false }), */
   modifyPostingValidateMw,
 
   (req, res) => {
@@ -178,8 +178,6 @@ router.delete(
     }
   }
 )
-
-module.exports = router
 
 // Postings lista jonne postaukset tallennetaan
 // Muutama hard koodattu hakemisen testaamisen helpottamiseksi
@@ -270,3 +268,5 @@ const postings = [
     },
   },
 ]
+
+module.exports = { router, postings }

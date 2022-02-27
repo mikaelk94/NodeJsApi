@@ -6,24 +6,24 @@
   "default": {},
   "examples": [
     {
-      "userId": "string",
-      "postingId": "string",
-      "title": "string",
-      "description": "string",
-      "category": "string",
-      "location": "string",
-      "images": [{}],
-      "price": "string",
-      "date": "string",
+      "userId": "1",
+      "postingId": "1",
+      "title": "Example posting",
+      "description": "example",
+      "category": "Konsolit",
+      "location": "Oulu",
+      "images": [],
+      "price": "1000",
+      "date": "2022-01-27",
       "deliveryType": {
         "shipping": true,
         "pickup": true
       },
       "contactInfo": {
-        "firstName": "string",
-        "phoneNum": "string",
-        "lastName": "string",
-        "email": "string"
+        "firstName": "example",
+        "lastName": "example",
+        "phoneNum": "045-2098621",
+        "email": "user@example.com"
       }
     }
   ],
@@ -43,7 +43,7 @@
       "title": "The userId schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["1"]
     },
     "postingId": {
       "$id": "#/properties/postingId",
@@ -51,7 +51,7 @@
       "title": "The postingId schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["1"]
     },
     "title": {
       "$id": "#/properties/title",
@@ -59,7 +59,7 @@
       "title": "The title schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["Example posting"]
     },
     "description": {
       "$id": "#/properties/description",
@@ -67,7 +67,7 @@
       "title": "The description schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["example"]
     },
     "category": {
       "$id": "#/properties/category",
@@ -75,7 +75,7 @@
       "title": "The category schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["Konsolit"]
     },
     "location": {
       "$id": "#/properties/location",
@@ -83,7 +83,7 @@
       "title": "The location schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["Oulu"]
     },
     "images": {
       "$id": "#/properties/images",
@@ -91,21 +91,9 @@
       "title": "The images schema",
       "description": "An explanation about the purpose of this instance.",
       "default": [],
-      "examples": [[{}]],
+      "examples": [[]],
       "items": {
-        "$id": "#/properties/images/items",
-        "anyOf": [
-          {
-            "$id": "#/properties/images/items/anyOf/0",
-            "type": "object",
-            "title": "The first anyOf schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": {},
-            "examples": [{}],
-            "required": [],
-            "additionalProperties": false
-          }
-        ]
+        "$id": "#/properties/images/items"
       }
     },
     "price": {
@@ -114,7 +102,7 @@
       "title": "The price schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["1000"]
     },
     "date": {
       "$id": "#/properties/date",
@@ -122,7 +110,7 @@
       "title": "The date schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["string"]
+      "examples": ["2022-01-27"]
     },
     "deliveryType": {
       "$id": "#/properties/deliveryType",
@@ -155,7 +143,7 @@
           "examples": [true]
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "contactInfo": {
       "$id": "#/properties/contactInfo",
@@ -165,13 +153,13 @@
       "default": {},
       "examples": [
         {
-          "firstName": "string",
-          "phoneNum": "string",
-          "lastName": "string",
-          "email": "string"
+          "firstName": "example",
+          "lastName": "example",
+          "phoneNum": "045-2098621",
+          "email": "user@example.com"
         }
       ],
-      "required": ["firstName", "phoneNum", "lastName", "email"],
+      "required": ["firstName", "lastName", "phoneNum", "email"],
       "properties": {
         "firstName": {
           "$id": "#/properties/contactInfo/properties/firstName",
@@ -179,15 +167,7 @@
           "title": "The firstName schema",
           "description": "An explanation about the purpose of this instance.",
           "default": "",
-          "examples": ["string"]
-        },
-        "phoneNum": {
-          "$id": "#/properties/contactInfo/properties/phoneNum",
-          "type": "string",
-          "title": "The phoneNum schema",
-          "description": "An explanation about the purpose of this instance.",
-          "default": "",
-          "examples": ["string"]
+          "examples": ["example"]
         },
         "lastName": {
           "$id": "#/properties/contactInfo/properties/lastName",
@@ -195,7 +175,15 @@
           "title": "The lastName schema",
           "description": "An explanation about the purpose of this instance.",
           "default": "",
-          "examples": ["string"]
+          "examples": ["example"]
+        },
+        "phoneNum": {
+          "$id": "#/properties/contactInfo/properties/phoneNum",
+          "type": "string",
+          "title": "The phoneNum schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": ["045-2098621"]
         },
         "email": {
           "$id": "#/properties/contactInfo/properties/email",
@@ -203,11 +191,11 @@
           "title": "The email schema",
           "description": "An explanation about the purpose of this instance.",
           "default": "",
-          "examples": ["string"]
+          "examples": ["user@example.com"]
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }

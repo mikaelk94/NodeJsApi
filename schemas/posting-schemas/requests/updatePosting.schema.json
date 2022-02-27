@@ -12,7 +12,7 @@
       "description": "string",
       "category": "string",
       "location": "string",
-      "images": [{}],
+      "images": [],
       "price": "string",
       "date": "string",
       "deliveryType": {
@@ -83,7 +83,7 @@
       "title": "The images schema",
       "description": "An explanation about the purpose of this instance.",
       "default": [],
-      "examples": [[{}]],
+      "examples": [[]],
       "items": {
         "$id": "#/properties/images/items",
         "anyOf": [
@@ -92,8 +92,8 @@
             "type": "object",
             "title": "The first anyOf schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": {},
-            "examples": [{}],
+            "default": [],
+            "examples": [],
             "required": [],
             "additionalProperties": false
           }
