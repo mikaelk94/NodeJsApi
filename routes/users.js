@@ -27,50 +27,13 @@ router.post('/', newUserValidateMw, (req, res) => {
 
   users.push(user)
   console.log('User created:', user)
-  res.sendStatus(201)
+  res.json(user)
 })
-
-/* router.get('/postings/:userId', (req, res) => {
-  console.log(req.params.userId)
-  var tulostus = []
-  let index = -1
-
-  for (let i = 0; i < postings.length; i++) {
-    if (postings[i].userId === parseInt(req.params.userId)) {
-      index = i
-      tulostus.push(postings[index])
-    }
-  }
-  if (index === -1) {
-    res.sendStatus(404)
-  } else {
-    res.json(tulostus)
-  }
-})
-
-// tällä voidaan hakea käyttäjä id:n perusteella lähinnä omia testejä varten
-router.get('/:testId', (req, res) => {
-  let foundIndex = -1
-  for (let i = 0; i < users.length; i++) {
-    if (users[i].testId === parseInt(req.params.testId)) {
-      foundIndex = i
-      break
-    }
-  }
-  if (foundIndex === -1) {
-    res.sendStatus(404)
-  } else {
-    res.json(users[foundIndex])
-  }
-}) */
 
 // Users lista jonne tallennetaan käyttäjät
-// muutama hard koodattu hakemisen testaamisen helpottamiseksi
-// testId lisätty hakemisen testaamiseen, koska uuidv4 kanssa hankalampaa
 const users = [
   {
     userId: uuidv4(),
-    testId: 1,
     username: 'MikkoM',
     password: 'salasana',
     firstName: 'Mikko',
@@ -83,7 +46,6 @@ const users = [
   },
   {
     userId: uuidv4(),
-    testId: 2,
     username: 'MaijaM',
     password: 'salasana',
     firstName: 'Maija',

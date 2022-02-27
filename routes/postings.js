@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { v4: uuidv4 } = require('uuid')
 const passport = require('passport')
+const users = require('./users').users
 
 // Kyselyjen validointiin tarvittavat middleware -funktiot
 const {
@@ -98,38 +99,48 @@ router.get('/', getPostingValidateMw, (req, res) => {
 
 router.post(
   '/:userId',
-  /* passport.authenticate('jwt', { session: false }), */
+  passport.authenticate('jwt', { session: false }),
   newPostingValidateMw,
 
   (req, res) => {
-    let posting = {
-      userId: req.params.userId,
-      postingId: uuidv4(),
-      title: req.body.title,
-      description: req.body.description,
-      category: req.body.category,
-      location: req.body.location,
-      images: req.body.images,
-      price: req.body.price,
-      date: req.body.date,
-      deliveryType: {
-        shipping: req.body.deliveryType.shipping,
-        pickup: req.body.deliveryType.pickup,
-      },
-      contactInfo: {
-        firstName: req.body.contactInfo.firstName,
-        phoneNum: req.body.contactInfo.phoneNum,
-        lastName: req.body.contactInfo.lastName,
-        email: req.body.contactInfo.email,
-      },
+
+    let foundUser = users.find(
+      (p) => p.userId === req.params.userId
+    )
+    if (foundUser) {
+      let posting = {
+        userId: req.params.userId,
+        postingId: uuidv4(),
+        title: req.body.title,
+        description: req.body.description,
+        category: req.body.category,
+        location: req.body.location,
+        images: req.body.images,
+        price: req.body.price,
+        date: req.body.date,
+        deliveryType: {
+          shipping: req.body.deliveryType.shipping,
+          pickup: req.body.deliveryType.pickup,
+        },
+        contactInfo: {
+          firstName: req.body.contactInfo.firstName,
+          phoneNum: req.body.contactInfo.phoneNum,
+          lastName: req.body.contactInfo.lastName,
+          email: req.body.contactInfo.email,
+        },
+      }
+      postings.push(posting)
+      /* console.log(
+        `Posting created by: ${posting.contactInfo.firstName} ${posting.contactInfo.lastName}`,
+        posting
+      ) */
+      res.sendStatus(201)
     }
-    postings.push(posting)
-    /* console.log(
-      `Posting created by: ${posting.contactInfo.firstName} ${posting.contactInfo.lastName}`,
-      posting
-    ) */
-    res.sendStatus(201)
+    else {
+      res.sendStatus(400)
+    }
   }
+
 )
 
 router.put(
@@ -138,7 +149,7 @@ router.put(
   modifyPostingValidateMw,
 
   (req, res) => {
-    console.log(req.params)
+    //console.log(req.params)
 
     // Käydään postings-taulukko läpi find()-metodilla, joka palauttaa 'true' jos id:t mätsää, tai 'false' jos ei. Tallenetaan arvo let -muuttujaan
     let foundPosting = postings.find(
