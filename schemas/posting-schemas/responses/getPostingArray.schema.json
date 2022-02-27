@@ -13,7 +13,7 @@
         "description": "example",
         "category": "Konsolit",
         "location": "Oulu",
-        "images": [null],
+        "images": [],
         "price": "1000",
         "date": "2022-01-27",
         "deliveryType": {
@@ -62,8 +62,6 @@
           }
         ],
         "required": [
-          "userId",
-          "postingId",
           "title",
           "description",
           "category",
@@ -128,7 +126,7 @@
             "title": "The images schema",
             "description": "An explanation about the purpose of this instance.",
             "default": [],
-            "examples": [[null]],
+            "examples": [[]],
             "items": {
               "$id": "#/items/anyOf/0/properties/images/items",
               "anyOf": [
@@ -137,8 +135,8 @@
                   "type": "null",
                   "title": "The first anyOf schema",
                   "description": "An explanation about the purpose of this instance.",
-                  "default": null,
-                  "examples": [null]
+                  "default": [],
+                  "examples": []
                 }
               ]
             }

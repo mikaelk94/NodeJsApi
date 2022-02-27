@@ -18,7 +18,7 @@ let posting = {
   description: 'example',
   category: 'MochaTesti',
   location: 'Oulu',
-  images: [{}],
+  images: [],
   price: '1000',
   date: '2022-01-27',
   deliveryType: {

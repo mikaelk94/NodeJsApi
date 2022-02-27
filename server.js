@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const users = require('./routes/users').router
-const postings = require('./routes/postings')
+const postings = require('./routes/postings').router
 const login = require('./routes/login')
 const upload = require('./routes/upload')
 
