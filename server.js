@@ -7,7 +7,7 @@ const upload = require('./routes/upload')
 
 const app = express()
 // heroku
-const port = process.env.PORT || 80
+// const port = process.env.PORT || 80
 // const port = 3000
 
 app.use(bodyParser.json())
@@ -25,12 +25,10 @@ let serverInstance = null
 
 module.exports = {
   start: function () {
-    serverInstance = app.listen(port, () => {
-      console.log(`App listening on port ${port}`)
-    })
+    serverInstance = app.listen(process.env.PORT || 80)
   },
   startDev: function () {
-    serverInstance = app.listen(port)
+    serverInstance = app.listen(3000)
   },
   close: function () {
     serverInstance.close()
