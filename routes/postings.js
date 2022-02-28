@@ -103,10 +103,7 @@ router.post(
   newPostingValidateMw,
 
   (req, res) => {
-
-    let foundUser = users.find(
-      (p) => p.userId === req.params.userId
-    )
+    let foundUser = users.find((p) => p.userId === req.params.userId)
     if (foundUser) {
       let posting = {
         userId: req.params.userId,
@@ -134,23 +131,20 @@ router.post(
         `Posting created by: ${posting.contactInfo.firstName} ${posting.contactInfo.lastName}`,
         posting
       ) */
-      res.sendStatus(201)
-    }
-    else {
+      // res.sendStatus(201)
+      res.json(posting)
+    } else {
       res.sendStatus(400)
     }
   }
-
 )
 
 router.put(
   '/:userId/:postingId',
-  /* passport.authenticate('jwt', { session: false }), */
+  passport.authenticate('jwt', { session: false }),
   modifyPostingValidateMw,
 
   (req, res) => {
-    //console.log(req.params)
-
     // Käydään postings-taulukko läpi find()-metodilla, joka palauttaa 'true' jos id:t mätsää, tai 'false' jos ei. Tallenetaan arvo let -muuttujaan
     let foundPosting = postings.find(
       (p) =>
@@ -174,7 +168,7 @@ router.put(
 
 router.delete(
   '/:userId/:postingId',
-  /* passport.authenticate('jwt', { session: false }), */
+  passport.authenticate('jwt', { session: false }),
   (req, res) => {
     let foundPosting = postings.find(
       (p) =>
@@ -182,7 +176,7 @@ router.delete(
     )
     if (foundPosting) {
       postings.splice(foundPosting, 1)
-      res.sendStatus(200)
+      res.sendStatus(202)
     } else {
       // Jos postausta ei löytynyt annetuilla id-parametreilla
       res.sendStatus(404)

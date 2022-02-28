@@ -4,18 +4,14 @@ const chaiHttp = require('chai-http')
 const server = require('../server')
 const chaiJsonSchemaAjv = require('chai-json-schema-ajv')
 const serverAddress = 'http://localhost:3000'
-let userId = ''
-
+let userId, postingId
+require('./LoginTest')
 
 // Vastausten validointiin käytetyt schemat
 const getPostingsArraySchema = require('../schemas/posting-schemas/responses/getPostingArray.schema.json')
-const { fromAuthHeaderAsBearerToken } = require('passport-jwt/lib/extract_jwt')
 
 chai.use(chaiJsonSchemaAjv)
 chai.use(chaiHttp)
-
-
-
 
 let posting = {
   userId: '',
@@ -40,19 +36,18 @@ let posting = {
 }
 
 let user = {
-  username: "Testi",
-  password: "salasana",
-  firstName: "Testi",
-  lastName: "Testi",
-  email: "user@example.com",
-  phoneNum: "045-2098621",
-  dateOfBirth: "1997-10-31",
+  username: 'Testi',
+  password: 'salasana',
+  firstName: 'Testi',
+  lastName: 'Testi',
+  email: 'user@example.com',
+  phoneNum: '045-2098621',
+  dateOfBirth: '1997-10-31',
   emailVerified: true,
-  createDate: "2019-08-24"
+  createDate: '2019-08-24',
 }
 
-describe('Web store API tests', () => {
-
+describe('Postings', () => {
   before(() => {
     server.startDev()
   })
@@ -81,8 +76,8 @@ describe('Web store API tests', () => {
   })
 
   // Uuden postauksen luonti
-  describe('Create new posting', function () {
-    it('create new user when data is correct', function (done) {
+  describe('POST /postings', function () {
+    it('create new user for posting tests', function (done) {
       chai
         .request(serverAddress)
         .post('/users')
@@ -91,11 +86,10 @@ describe('Web store API tests', () => {
           expect(err).to.be.null
           expect(res).to.have.status(200)
           userId = res.body.userId
-          console.log(userId)
           done()
         })
     })
-    it('logins with correct username and password', function (done) {
+    it('should login with correct username and password', function (done) {
       chai
         .request(serverAddress)
         .post('/login')
@@ -108,7 +102,7 @@ describe('Web store API tests', () => {
           done()
         })
     })
-    it('should accept new posting when data is correct', function (done) {
+    it('should create new posting when data is correct', function (done) {
       chai
         .request(serverAddress)
         .post(`/postings/${userId}`)
@@ -116,14 +110,15 @@ describe('Web store API tests', () => {
         .send(posting)
         .end(function (err, res) {
           expect(err).to.be.null
-          expect(res).to.have.status(201)
+          expect(res).to.have.status(200)
+          postingId = res.body.postingId
           done()
         })
     })
     it('should reject request with missing fields from data structure', function (done) {
       chai
         .request(serverAddress)
-        .post('/postings/1')
+        .post(`/postings/${userId}`)
         .set({ Authorization: `Bearer ${token}` })
         .send({
           userId: '',
@@ -155,7 +150,7 @@ describe('Web store API tests', () => {
     it('should reject request with incorrect data types', function (done) {
       chai
         .request(serverAddress)
-        .post('/postings/1')
+        .post(`/postings/${userId}`)
         .set({ Authorization: `Bearer ${token}` })
         .send({
           userId: '',
@@ -187,7 +182,7 @@ describe('Web store API tests', () => {
     it('should reject empty post requests', function (done) {
       chai
         .request(serverAddress)
-        .post('/postings/1')
+        .post(`/postings/${userId}`)
         .set({ Authorization: `Bearer ${token}` })
         .end(function (err, res) {
           expect(err).to.be.null
@@ -216,6 +211,73 @@ describe('Web store API tests', () => {
           if (!found) {
             assert.fail('Data not saved')
           }
+          done()
+        })
+    })
+  })
+
+  // Postauksen muokkaus
+  describe('PUT /postings', () => {
+    it('should accept the request when data is correct', (done) => {
+      chai
+        .request(serverAddress)
+        .put(`/postings/${userId}/${postingId}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send(posting)
+        .end((err, res) => {
+          expect(err).to.be.null
+          expect(res).to.have.status(202)
+          done()
+        })
+    })
+    it('should reject the request if req.body is empty', (done) => {
+      chai
+        .request(serverAddress)
+        .put(`/postings/${userId}/${postingId}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send()
+        .end((err, res) => {
+          expect(err).to.be.null
+          expect(res).to.have.status(400)
+          done()
+        })
+    })
+    it('should reject the request if the posting is not found', (done) => {
+      chai
+        .request(serverAddress)
+        .put('/postings/23/23')
+        .set({ Authorization: `Bearer ${token}` })
+        .send(posting)
+        .end((err, res) => {
+          expect(err).to.be.null
+          expect(res).to.have.status(404)
+          done()
+        })
+    })
+  })
+
+  // Postauksen poisto
+  describe('DELETE /postings', () => {
+    it('should accept the request when data is correct', (done) => {
+      chai
+        .request(serverAddress)
+        /* .delete(`/postings/${userId}/${postingId}`) */
+        .delete(`/postings/1/1`)
+        .set({ Authorization: `Bearer ${token}` })
+        .end((err, res) => {
+          expect(err).to.be.null
+          expect(res).to.have.status(202)
+          done()
+        })
+    })
+    it('should reject the request if the posting is not found', (done) => {
+      chai
+        .request(serverAddress)
+        .delete('/postings/23/23')
+        .set({ Authorization: `Bearer ${token}` })
+        .end((err, res) => {
+          expect(err).to.be.null
+          expect(res).to.have.status(404)
           done()
         })
     })
