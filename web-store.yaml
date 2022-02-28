@@ -1,0 +1,560 @@
+openapi: 3.1.0
+info:
+  title: web-store
+  version: '1.0'
+  description: Basic API for web marketplace
+  summary: Basic API
+  contact:
+    name: Mikael Kanniainen
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /postings:
+    parameters: []
+    get:
+      summary: Get postings
+      tags: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                x-examples:
+                  example-1:
+                    - title: string
+                      description: string
+                      category: string
+                      location: string
+                      images:
+                        - null
+                      price: string
+                      postDate: '2022-01-27'
+                      deliveryType:
+                        shipping: true
+                        pickup: true
+                      contactInfo:
+                        firstName: string
+                        phoneNum: 045-2098621
+                        lastName: string
+                        email: user@example.com
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      minLength: 1
+                    description:
+                      type: string
+                      minLength: 1
+                    category:
+                      type: string
+                      minLength: 1
+                    location:
+                      type: string
+                      minLength: 1
+                    images:
+                      type: array
+                      items:
+                        type: string
+                    price:
+                      type: string
+                      minLength: 1
+                    postDate:
+                      type: string
+                      minLength: 1
+                    deliveryType:
+                      type: object
+                      required:
+                        - shipping
+                        - pickup
+                      properties:
+                        shipping:
+                          type: boolean
+                        pickup:
+                          type: boolean
+                    contactInfo:
+                      type: object
+                      required:
+                        - firstName
+                        - phoneNum
+                        - lastName
+                        - email
+                      properties:
+                        firstName:
+                          type: string
+                          minLength: 1
+                        phoneNum:
+                          type: string
+                          minLength: 1
+                        lastName:
+                          type: string
+                          minLength: 1
+                        email:
+                          type: string
+                          minLength: 1
+                  required:
+                    - title
+                    - description
+                    - category
+                    - location
+                    - price
+                    - postDate
+                    - deliveryType
+                    - contactInfo
+              examples: {}
+        '404':
+          description: postings not found
+      operationId: get-postings
+      description: 'Get all postings (no query parameters), or get postings by user defined query parameters'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: category
+        - schema:
+            type: string
+          in: query
+          name: location
+        - schema:
+            type: string
+          in: query
+          name: postDate
+  /users:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 12
+                    username: BobF
+                    password: something
+                    firstName: Bob
+                    lastName: Fellow
+                    email: bob.fellow@gmail.com
+                    dateOfBirth: '1996-08-24'
+                    emailVerified: false
+                    createDate: '2020-11-18'
+                    phoneNum: '044203693'
+        '400':
+          description: Missing Required Information
+        '409':
+          description: Email Already Taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example-1:
+                value:
+                  id: 0
+                  username: string
+                  password: string
+                  firstName: string
+                  lastName: string
+                  email: user@example.com
+                  phoneNum: 045-2098621
+                  dateOfBirth: '1997-10-31'
+                  emailVerified: true
+                  createDate: '2019-08-24'
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+    parameters: []
+  '/postings/{userId}':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+    post:
+      summary: Making a new post
+      operationId: post-postings-userId
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      description: Create a new posting
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  title: string
+                  description: string
+                  category: string
+                  location: string
+                  images:
+                    - null
+                  price: string
+                  postDate: '2022-01-27'
+                  deliveryType:
+                    shipping: true
+                    pickup: true
+                  contactInfo:
+                    firstName: string
+                    phoneNum: 045-2098621
+                    lastName: string
+                    email: user@example.com
+              properties:
+                userId:
+                  type: string
+                  minLength: 1
+                  description: Generated by the API
+                postingId:
+                  type: string
+                  minLength: 1
+                  description: Generated by the API
+                title:
+                  type: string
+                  minLength: 1
+                description:
+                  type: string
+                  minLength: 1
+                category:
+                  type: string
+                  minLength: 1
+                location:
+                  type: string
+                  minLength: 1
+                images:
+                  type: array
+                  description: Use /upload path to add images
+                  items:
+                    type: string
+                price:
+                  type: string
+                  minLength: 1
+                date:
+                  type: string
+                  minLength: 1
+                  example: '2022-01-25'
+                  format: date
+                deliveryType:
+                  type: object
+                  required:
+                    - shipping
+                    - pickup
+                  properties:
+                    shipping:
+                      type: boolean
+                    pickup:
+                      type: boolean
+                contactInfo:
+                  type: object
+                  required:
+                    - firstName
+                    - phoneNum
+                    - lastName
+                    - email
+                  properties:
+                    firstName:
+                      type: string
+                      minLength: 1
+                    phoneNum:
+                      type: string
+                      minLength: 1
+                    lastName:
+                      type: string
+                      minLength: 1
+                    email:
+                      type: string
+                      minLength: 1
+              required:
+                - title
+                - description
+                - category
+                - location
+                - price
+                - date
+                - deliveryType
+                - contactInfo
+            examples:
+              example-1:
+                value:
+                  userId: string
+                  postingId: string
+                  title: string
+                  description: string
+                  category: string
+                  location: string
+                  images:
+                    - {}
+                  price: string
+                  date: string
+                  deliveryType:
+                    shipping: true
+                    pickup: true
+                  contactInfo:
+                    firstName: string
+                    phoneNum: string
+                    lastName: string
+                    email: string
+        description: ''
+      security:
+        - passport-jwt: []
+  '/postings/{userId}/{postingId}':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: postingId
+        in: path
+        required: true
+    delete:
+      summary: ''
+      operationId: 'delete-postings-userId,-postingId'
+      responses:
+        '200':
+          description: OK
+      description: Delete existing posting
+      security:
+        - passport-jwt: []
+    put:
+      summary: Modify or delete posting
+      operationId: put-postings-userId-postingId
+      responses:
+        '202':
+          description: Accepted
+        '404':
+          description: Not Found
+      description: 'Modify or delete existing posting '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Posting'
+            examples:
+              example-1:
+                value:
+                  title: string
+                  description: string
+                  category: string
+                  location: string
+                  images:
+                    - ''
+                  price: string
+                  postDate: '2022-01-27'
+                  deliveryType:
+                    shipping: true
+                    pickup: true
+                  contactInfo:
+                    firstName: string
+                    phoneNum: 045-2098621
+                    lastName: string
+                    email: user@example.com
+      security:
+        - passport-jwt: []
+  /login:
+    post:
+      summary: ''
+      operationId: post-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    token: string
+                properties:
+                  token:
+                    type: string
+                    minLength: 1
+                required:
+                  - token
+        '401':
+          description: Unauthorized
+      description: 'Returns jwt webtoken '
+      security:
+        - http-basic: []
+      parameters: []
+  /upload:
+    put:
+      summary: ''
+      operationId: put-upload
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: Upload images to cloudinary. Push image URL's in to matching postings 'image' -field.
+      security:
+        - passport-jwt: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: object
+                  maxProperties: 3
+                userId:
+                  type: string
+                postingId:
+                  type: string
+              required:
+                - images
+                - userId
+                - postingId
+            examples:
+              example-1:
+                value:
+                  images:
+                    - {}
+                  userId: string
+                  postingId: string
+        description: ''
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      description: ''
+      examples:
+        - id: 0
+          username: string
+          password: string
+          firstName: string
+          lastName: string
+          email: user@example.com
+          phoneNum: 045-2098621
+          dateOfBirth: '1997-10-31'
+          emailVerified: true
+          createDate: '2019-08-24'
+      properties:
+        userId:
+          type: string
+          description: Unique identifier for the given user. Generated by the API.
+        username:
+          type: string
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phoneNum:
+          type: string
+          example: 045-2098621
+        dateOfBirth:
+          type: string
+          format: date
+          example: '1997-10-31'
+        emailVerified:
+          type: boolean
+          description: Set to true if the user's email has been verified.
+        createDate:
+          type: string
+          format: date
+          description: The date that the user was created.
+      required:
+        - username
+        - password
+        - firstName
+        - lastName
+        - email
+        - phoneNum
+        - dateOfBirth
+        - createDate
+    Posting:
+      title: Posting
+      type: object
+      examples:
+        - title: string
+          description: string
+          category: string
+          location: string
+          images:
+            - null
+          price: string
+          postDate: '2022-01-27'
+          deliveryType:
+            shipping: true
+            pickup: true
+          contactInfo:
+            firstName: string
+            phoneNum: 045-2098621
+            lastName: string
+            email: user@example.com
+      description: ''
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+          description: 'clothing, cars etc.'
+        location:
+          type: string
+          description: 'city, country etc.'
+        images:
+          type: array
+          maxItems: 4
+          items:
+            type: string
+        price:
+          type: string
+        date:
+          type: string
+          format: date
+          example: '2022-01-27'
+        deliveryType:
+          type: object
+          properties:
+            shipping:
+              type: boolean
+            pickup:
+              type: boolean
+        contactInfo:
+          type: object
+          properties:
+            firstName:
+              type: string
+            phoneNum:
+              type: string
+              example: 045-2098621
+            lastName:
+              type: string
+            email:
+              type: string
+              format: email
+  securitySchemes:
+    http-basic:
+      type: http
+      scheme: basic
+    passport-jwt:
+      type: http
+      scheme: bearer

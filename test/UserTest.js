@@ -16,7 +16,7 @@ let user = {
   password: 'salasana',
   firstName: 'Testi',
   lastName: 'Testi',
-  email: 'user@example.com',
+  email: 'users@example.com',
   phoneNum: '045-2098621',
   dateOfBirth: '1997-10-31',
   emailVerified: true,
@@ -41,6 +41,17 @@ describe('Users', () => {
         .end(function (err, res) {
           expect(err).to.be.null
           expect(res).to.have.status(200)
+          done()
+        })
+    })
+    it('should reject request if email is taken', function (done) {
+      chai
+        .request(serverAddress)
+        .post('/users')
+        .send(user)
+        .end(function (err, res) {
+          expect(err).to.be.null
+          expect(res).to.have.status(409)
           done()
         })
     })
