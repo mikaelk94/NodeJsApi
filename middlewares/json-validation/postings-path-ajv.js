@@ -20,8 +20,9 @@ const modifyPostingValidateMw = (req, res, next) => {
   const modifyPostingValidator = ajv.compile(modifyPosting)
   const validationResult = modifyPostingValidator(req.body)
   // console.log(validationResult)
+  const isEmpty = Object.keys(req.body).length === 0
 
-  if (validationResult) {
+  if (validationResult && !isEmpty) {
     next()
   } else {
     res.sendStatus(400)

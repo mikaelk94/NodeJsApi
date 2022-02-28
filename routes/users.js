@@ -26,7 +26,7 @@ router.post('/', newUserValidateMw, (req, res) => {
   }
 
   users.push(user)
-  console.log('User created:', user)
+  // console.log('User created:', user)
   res.json(user)
 })
 

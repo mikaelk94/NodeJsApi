@@ -8,7 +8,7 @@ const { BasicStrategy } = require('passport-http')
 
 passport.use(
   new BasicStrategy(function (username, password, done) {
-    console.log('Login from: ', username)
+    // console.log('Login from: ', username)
     let user = users.find(
       (user) =>
         user.username === username &&
@@ -17,7 +17,7 @@ passport.use(
     if (user != undefined) {
       done(null, { user })
     } else {
-      console.log('User not found')
+      // console.log('User not found')
       done(null, false)
     }
   })
