@@ -12,22 +12,28 @@ router.post('/', newUserValidateMw, (req, res) => {
   const salt = bcrypt.genSaltSync(6)
   const hashedPassword = bcrypt.hashSync(req.body.password, salt)
 
-  const user = {
-    userId: uuidv4(),
-    username: req.body.username,
-    password: hashedPassword,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    phoneNum: req.body.phoneNum,
-    dateOfBirth: req.body.dateOfBirth,
-    emailVerified: req.body.emailVerified,
-    createDate: req.body.createDate,
-  }
+  let emailTaken = users.find((p) => p.email == req.body.email)
 
-  users.push(user)
-  // console.log('User created:', user)
-  res.json(user)
+  if (!emailTaken) {
+    const user = {
+      userId: uuidv4(),
+      username: req.body.username,
+      password: hashedPassword,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phoneNum: req.body.phoneNum,
+      dateOfBirth: req.body.dateOfBirth,
+      emailVerified: req.body.emailVerified,
+      createDate: req.body.createDate,
+    }
+
+    users.push(user)
+    // console.log('User created:', user)
+    res.json(user)
+  } else {
+    res.sendStatus(409)
+  }
 })
 
 // Users lista jonne tallennetaan käyttäjät

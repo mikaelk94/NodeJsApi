@@ -40,7 +40,7 @@ let user = {
   password: 'salasana',
   firstName: 'Testi',
   lastName: 'Testi',
-  email: 'user@example.com',
+  email: 'postings@example.com',
   phoneNum: '045-2098621',
   dateOfBirth: '1997-10-31',
   emailVerified: true,

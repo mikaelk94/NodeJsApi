@@ -189,13 +189,13 @@ router.delete(
 
 const postings = [
   {
-    userId: 1,
-    postingId: 1,
+    userId: '1',
+    postingId: '1',
     title: 'Example posting',
     description: 'example',
     category: 'Konsolit',
     location: 'Oulu',
-    images: [null],
+    images: [],
     price: '1000',
     date: '2022-01-27',
     deliveryType: {
@@ -210,13 +210,13 @@ const postings = [
     },
   },
   {
-    userId: 2,
-    postingId: 2,
+    userId: '2',
+    postingId: '2',
     title: 'Example posting2',
     description: 'example2',
     category: 'Ajoneuvot',
     location: 'Finland',
-    images: [null],
+    images: [],
     price: '1000',
     date: '2022-01-26',
     deliveryType: {
@@ -231,13 +231,13 @@ const postings = [
     },
   },
   {
-    userId: 3,
-    postingId: 3,
+    userId: '3',
+    postingId: '3',
     title: 'Example posting',
     description: 'example',
     category: 'Test',
     location: 'Finland',
-    images: [null],
+    images: [],
     price: '1000',
     date: '2022-01-25',
     deliveryType: {
@@ -252,13 +252,13 @@ const postings = [
     },
   },
   {
-    userId: 4,
-    postingId: 4,
+    userId: '4',
+    postingId: '4',
     title: 'Example posting',
     description: 'example',
     category: 'Test',
     location: 'Finland',
-    images: [null],
+    images: [],
     price: '1000',
     date: '2022-01-25',
     deliveryType: {

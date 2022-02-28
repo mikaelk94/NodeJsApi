@@ -7,8 +7,8 @@
   "examples": [
     [
       {
-        "userId": 1,
-        "postingId": 1,
+        "userId": "1",
+        "postingId": "1",
         "title": "Example posting",
         "description": "example",
         "category": "Konsolit",
@@ -40,13 +40,13 @@
         "default": {},
         "examples": [
           {
-            "userId": 1,
-            "postingId": 1,
+            "userId": "1",
+            "postingId": "1",
             "title": "Example posting",
             "description": "example",
             "category": "Konsolit",
             "location": "Oulu",
-            "images": [null],
+            "images": [],
             "price": "1000",
             "date": "2022-01-27",
             "deliveryType": {
@@ -74,19 +74,19 @@
         "properties": {
           "userId": {
             "$id": "#/items/anyOf/0/properties/userId",
-            "type": "integer",
+            "type": "string",
             "title": "The userId schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": 0,
-            "examples": [1]
+            "default": "",
+            "examples": ["1"]
           },
           "postingId": {
             "$id": "#/items/anyOf/0/properties/postingId",
-            "type": "integer",
+            "type": "string",
             "title": "The postingId schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": 0,
-            "examples": [1]
+            "default": "",
+            "examples": ["1"]
           },
           "title": {
             "$id": "#/items/anyOf/0/properties/title",
@@ -128,17 +128,7 @@
             "default": [],
             "examples": [[]],
             "items": {
-              "$id": "#/items/anyOf/0/properties/images/items",
-              "anyOf": [
-                {
-                  "$id": "#/items/anyOf/0/properties/images/items/anyOf/0",
-                  "type": "null",
-                  "title": "The first anyOf schema",
-                  "description": "An explanation about the purpose of this instance.",
-                  "default": [],
-                  "examples": []
-                }
-              ]
+              "$id": "#/items/anyOf/0/properties/images/items"
             }
           },
           "price": {

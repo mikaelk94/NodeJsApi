@@ -6,7 +6,9 @@ const login = require('./routes/login')
 const upload = require('./routes/upload')
 
 const app = express()
-const port = 3000
+// heroku
+const port = process.env.PORT || 80
+// const port = 3000
 
 app.use(bodyParser.json())
 
