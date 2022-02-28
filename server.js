@@ -17,6 +17,10 @@ app.use('/postings', postings)
 app.use('/login', login)
 app.use('/upload', upload)
 
+app.get('/', (req, res) => {
+  res.sendStatus(200)
+})
+
 let serverInstance = null
 
 module.exports = {
