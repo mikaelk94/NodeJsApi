@@ -1,5 +1,5 @@
 # NodeJsApi
-nodeJS web-store-API with express.
+web-store-API with nodeJS and express.
 
 This API was made as a school project during a course called Building Cloud Integraton in Oulu University of Applied Sciences.
 
