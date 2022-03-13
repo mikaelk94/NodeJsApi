@@ -12,7 +12,10 @@ router.post(
     const payloadData = {
       userId: req.user.user.userId,
     }
-    const token = jwt.sign(payloadData, 'avain')
+    const token = jwt.sign(
+      payloadData,
+      process.env.avain || require('../secrets')
+    )
     res.json({ token: token })
     //console.log('payloadData:', payloadData)
   }
