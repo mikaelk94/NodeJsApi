@@ -10,9 +10,12 @@ router.post(
   passport.authenticate('basic', { session: false }),
   (req, res) => {
     const payloadData = {
-      userId: req.user.user.userId,
+      userId: req.user.user._id,
     }
-    const token = jwt.sign(payloadData, 'avain')
+    const token = jwt.sign(
+      payloadData,
+      process.env.avain || require('../secrets').avain
+    )
     res.json({ token: token })
     //console.log('payloadData:', payloadData)
   }
