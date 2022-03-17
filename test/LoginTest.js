@@ -16,7 +16,6 @@ let user = {
   phoneNum: '045-2098621',
   dateOfBirth: '1997-10-31',
   emailVerified: true,
-  createDate: '2019-08-24',
 }
 
 describe('Login', () => {
