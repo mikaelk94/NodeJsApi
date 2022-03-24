@@ -5,10 +5,10 @@ const User = require('../schemas/user')
 const Posting = require('../schemas/posting')
 
 // Kyselyjen validointiin tarvittavat middleware -funktiot
-const { getPostingValidateMw } = require('../middlewares/posting-middlewares')
+const getPostingValidateMw = require('../middlewares/posting-middlewares')
 
 // Tämän avulla voidaan hakea halutut postaukset olit kirjautunut tai et
-router.get('/', async (req, res) => {
+router.get('/', getPostingValidateMw, async (req, res) => {
   try {
     const foundPosting = await Posting.find()
     return res.status(200).json(foundPosting)

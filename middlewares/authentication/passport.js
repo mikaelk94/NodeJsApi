@@ -25,7 +25,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 
 const jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
-jwtOptions.secretOrKey = process.env.avain || require('../../secrets').avain
+jwtOptions.secretOrKey = process.env.avain || require('../../secrets')
 
 passport.use(
   new JwtStrategy(jwtOptions, function (jwt_payload, done) {
