@@ -6,13 +6,15 @@ const login = require('./routes/login')
 const upload = require('./routes/upload')
 const mongoose = require('mongoose')
 const { mongodb_uri } = require('./secrets')
+const cors = require('cors')
 
 const app = express()
 // heroku
 const herokuPort = process.env.PORT || 80
-const localhostPort = 3000
+const localhostPort = 3001
 
 app.use(bodyParser.json())
+app.use(cors())
 
 app.use('/users', users)
 app.use('/postings', postings)
