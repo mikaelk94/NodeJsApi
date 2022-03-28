@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const User = require('../../schemas/user')
+const { avain } = require('../../secrets')
 
 /******** Middleware funktio passport-HTTP autentikointiin *********/
 const { BasicStrategy } = require('passport-http')
@@ -25,7 +26,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 
 const jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
-jwtOptions.secretOrKey = process.env.avain || require('../../secrets')
+jwtOptions.secretOrKey = process.env.avain || avain
 
 passport.use(
   new JwtStrategy(jwtOptions, function (jwt_payload, done) {
