@@ -34,7 +34,7 @@ module.exports = {
   start: function () {
     app.use('/upload', upload)
     mongoose.connect(mongodb_uri, () => {
-      serverInstance = app.listen(localhostPort)
+      serverInstance = app.listen(herokuPort)
     })
   },
   startDev: function () {
