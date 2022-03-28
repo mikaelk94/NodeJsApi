@@ -21,7 +21,7 @@ app.use('/postings', postings)
 app.use('/login', login)
 
 app.get('/', (req, res) => {
-  res.redirect('/postings')
+  return res.status(200)
 })
 
 let serverInstance = null
