@@ -5,7 +5,7 @@ const postings = require('./routes/postings').router
 const login = require('./routes/login')
 const upload = require('./routes/upload')
 const mongoose = require('mongoose')
-const { mongodb_uri } = process.env.MONGODB_URI
+const mongodb_uri = process.env.MONGODB_URI || require('./secrets').mongodb_uri
 const cors = require('cors')
 
 const app = express()
@@ -21,7 +21,11 @@ app.use('/postings', postings)
 app.use('/login', login)
 
 app.get('/', (req, res) => {
-  return res.status(200)
+  res.status(200).json({
+    documentation:
+      'https://mikael-k.stoplight.io/docs/web-store/YXBpOjIzMjY3NjQz-web-store',
+    routes: ['/users', '/postings', '/login', '/upload'],
+  })
 })
 
 let serverInstance = null
@@ -29,8 +33,8 @@ let serverInstance = null
 module.exports = {
   start: function () {
     app.use('/upload', upload)
-    mongoose.connect(process.env.MONGODB_URI, () => {
-      serverInstance = app.listen(herokuPort)
+    mongoose.connect(mongodb_uri, () => {
+      serverInstance = app.listen(localhostPort)
     })
   },
   startDev: function () {
