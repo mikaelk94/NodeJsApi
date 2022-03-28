@@ -29,7 +29,7 @@ let serverInstance = null
 module.exports = {
   start: function () {
     app.use('/upload', upload)
-    mongoose.connect(mongodb_uri, () => {
+    mongoose.connect(process.env.MONGODB_URI, () => {
       serverInstance = app.listen(herokuPort)
     })
   },
