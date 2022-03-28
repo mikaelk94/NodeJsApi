@@ -22,11 +22,14 @@ router.put(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
+      let imagesArray = []
+      req.files.map((p) => {
+        imagesArray.push(p.path)
+      })
       const foundPosting = await Posting.findById(req.params.postingId)
       if (foundPosting) {
-        req.files.map((p) => {
-          foundPosting.images.push(p.path)
-        })
+        foundPosting.images = imagesArray
+        await foundPosting.save()
         res.sendStatus(200)
       }
     } catch (err) {
