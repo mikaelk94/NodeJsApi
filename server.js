@@ -5,7 +5,7 @@ const postings = require('./routes/postings').router
 const login = require('./routes/login')
 const upload = require('./routes/upload')
 const mongoose = require('mongoose')
-const { mongodb_uri } = require('./secrets')
+const { mongodb_uri } = require('./secrets') || process.env.MONGODB_URI
 const cors = require('cors')
 
 const app = express()
