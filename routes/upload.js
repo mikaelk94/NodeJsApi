@@ -1,36 +1,36 @@
 const express = require('express')
 const router = express.Router()
-const postings = require('./postings').postings
+const Posting = require('../schemas/posting')
 const passport = require('passport')
 const multer = require('multer')
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
 const cloudinary = require('cloudinary').v2
 
 // Config cloudinary storage for multer-storage-cloudinary
-var storage = new CloudinaryStorage({
+const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: '',
   },
 })
 
-var parser = multer({ storage: storage })
+const parser = multer({ storage: storage })
 
 router.put(
   '/',
-  parser.array('images', 3),
+  parser.array('images', 4),
   passport.authenticate('jwt', { session: false }),
-  function (req, res) {
-    let foundPosting = postings.find(
-      (p) => p.userId == req.body.userId && p.postingId == req.body.postingId
-    )
-    if (foundPosting) {
-      req.files.map((p) => {
-        foundPosting.images.push(p.path)
-      })
-      res.sendStatus(200)
-    } else {
-      res.sendStatus(404)
+  async (req, res) => {
+    try {
+      const foundPosting = await Posting.findById(req.params.postingId)
+      if (foundPosting) {
+        req.files.map((p) => {
+          foundPosting.images.push(p.path)
+        })
+        res.sendStatus(200)
+      }
+    } catch (err) {
+      return res.status(400).json(err)
     }
   }
 )

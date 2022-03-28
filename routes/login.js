@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('../middlewares/authentication/passport')
 const jwt = require('jsonwebtoken')
+const { avain } = require('../secrets')
 
 /**************** Login ****************/
 router.post(
@@ -11,10 +12,7 @@ router.post(
     const payloadData = {
       userId: req.user.user._id,
     }
-    const token = jwt.sign(
-      payloadData,
-      process.env.avain || require('../secrets')
-    )
+    const token = jwt.sign(payloadData, process.env.avain || avain)
     res.json({ token: token })
     //console.log('payloadData:', payloadData)
   }
