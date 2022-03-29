@@ -26,7 +26,7 @@ router.put(
       req.files.map((p) => {
         imagesArray.push(p.path)
       })
-      const foundPosting = await Posting.findById(req.params.postingId)
+      const foundPosting = await Posting.findById(req.body.postingId)
       if (foundPosting) {
         foundPosting.images = imagesArray
         await foundPosting.save()
