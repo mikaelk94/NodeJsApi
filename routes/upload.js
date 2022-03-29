@@ -31,6 +31,8 @@ router.put(
         foundPosting.images = imagesArray
         await foundPosting.save()
         res.sendStatus(200)
+      } else {
+        res.status(404).json({ error: 'posting not found' })
       }
     } catch (err) {
       return res.status(400).json(err)
