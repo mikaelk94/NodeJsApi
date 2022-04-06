@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const User = require('../../schemas/user')
-//const { avain } = require('../../secrets')
+/* const { avain } = require('../../secrets') */
 
 /******** Middleware funktio passport-HTTP autentikointiin *********/
 const { BasicStrategy } = require('passport-http')
@@ -12,7 +12,7 @@ passport.use(
     if (user) {
       let passwordCorrect = await bcrypt.compare(password, user.password)
       if (passwordCorrect) {
-        done(null, { user })
+        done(null, user)
       }
     } else {
       done(null, false)

@@ -42,6 +42,7 @@ module.exports = {
     mongoose.connect(
       'mongodb://localhost/localhostdb',
       () => {
+        app.use('/upload', upload)
         console.log('Connected to localhost MongoDB')
         serverInstance = app.listen(localhostPort)
         console.log(`Server running on localhost:${localhostPort}`)

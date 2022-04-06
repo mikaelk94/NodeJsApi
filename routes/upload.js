@@ -10,7 +10,7 @@ const cloudinary = require('cloudinary').v2
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: '',
+    folder: '/postings',
   },
 })
 
