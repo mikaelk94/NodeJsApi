@@ -5,7 +5,7 @@ const postings = require('./routes/postings').router
 const login = require('./routes/login')
 const upload = require('./routes/upload')
 const mongoose = require('mongoose')
-const { mongodb_uri } = require('./secrets')
+const mongodb_uri = process.env.MONGODB_URI
 const cors = require('cors')
 
 const app = express()
@@ -21,7 +21,11 @@ app.use('/postings', postings)
 app.use('/login', login)
 
 app.get('/', (req, res) => {
-  res.redirect('/postings')
+  res.status(200).json({
+    documentation:
+      'https://mikael-k.stoplight.io/docs/web-store/YXBpOjIzMjY3NjQz-web-store',
+    routes: ['/users', '/postings', '/login', '/upload'],
+  })
 })
 
 let serverInstance = null
@@ -38,6 +42,7 @@ module.exports = {
     mongoose.connect(
       'mongodb://localhost/localhostdb',
       () => {
+        app.use('/upload', upload)
         console.log('Connected to localhost MongoDB')
         serverInstance = app.listen(localhostPort)
         console.log(`Server running on localhost:${localhostPort}`)

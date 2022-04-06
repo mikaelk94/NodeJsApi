@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const postingSchema = mongoose.Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      type: String,
+      required: true,
     },
     title: {
       type: String,
@@ -46,6 +46,13 @@ postingSchema.path('images').validate((images) => {
   if (images.length > 4) {
     throw new Error("Posting can't contain more than 4 images")
   }
+})
+
+postingSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject.__v
+  },
 })
 
 module.exports = mongoose.model('Posting', postingSchema)

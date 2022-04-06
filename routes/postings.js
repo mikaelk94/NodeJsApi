@@ -17,6 +17,22 @@ router.get('/', getPostingValidateMw, async (req, res) => {
   }
 })
 
+router.get(
+  '/:userId',
+  getPostingValidateMw,
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const foundPosting = await Posting.find({
+        userId: req.params.userId,
+      })
+      return res.status(200).json(foundPosting)
+    } catch (e) {
+      return res.status(400).json(e)
+    }
+  }
+)
+
 router.post(
   '/:userId',
   passport.authenticate('jwt', { session: false }),
