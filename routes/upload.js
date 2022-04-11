@@ -12,6 +12,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: '/postings',
   },
+  options: { height: 200, width: 200, crop: 'fill' },
 })
 
 const parser = multer({ storage: storage })
