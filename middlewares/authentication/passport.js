@@ -13,6 +13,8 @@ passport.use(
       let passwordCorrect = await bcrypt.compare(password, user.password)
       if (passwordCorrect) {
         done(null, user)
+      } else {
+        done(null, false)
       }
     } else {
       done(null, false)
