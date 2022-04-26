@@ -12,7 +12,6 @@ const storage = new CloudinaryStorage({
   params: {
     folder: '/postings',
   },
-  options: { height: 200, width: 200, crop: 'fill' },
 })
 
 const parser = multer({ storage: storage })
@@ -23,6 +22,9 @@ router.put(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
+      if (req.files.length === 0) {
+        return res.status(400).json({ error: 'image upload failed' })
+      }
       let imagesArray = []
       req.files.map((p) => {
         imagesArray.push(p.path)
